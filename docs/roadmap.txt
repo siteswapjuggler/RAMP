@@ -1,0 +1,7 @@
+ROADMAP - Ramp v0.3
+
+- commencer la documentions
+- grain() pour configurer le grain (par défaut 10ms)
+- ajouter les keywords
+
+attention aux limitation (à priori ok)

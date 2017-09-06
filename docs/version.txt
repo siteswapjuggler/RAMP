@@ -1,0 +1,21 @@
+NOTES DE VERSION - Ramp
+
+v0.1 ----------------------------------------------------------------------
+
+version de Damien Clairgeaud ?
+
+première version du code, un seule classe pour les uint8, 
+des méthodes pour attribuer et récupérer les valeurs.
+
+un attribut vitesse pour régler le grain
+deux booléens pour dire dire si c'est stoppé ou non
+
+
+v0.2 ----------------------------------------------------------------------
+
+class RGB, disparition des booléens, ni set ni get
+
+v0.3 ----------------------------------------------------------------------
+
+intégration de plus de modes d'interpolation
+paramètre de continuité de l'animation

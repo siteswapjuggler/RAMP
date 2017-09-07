@@ -8,65 +8,23 @@
  -----------------------------*/
 
 template <class T>
-ramp<T>::ramp() {
-    ramp(0);
-}
-
-template <class T>
-ramp<T>::ramp(T _val) {
-    A      = _val;
-    B      = _val;
-    val    = _val;
-    mode   = NONE;
-    dur    = 0;
-    pos    = 0;
-    loop   = ONCEFORWARD;
-    speed  = FORWARD;
-    paused = false;
+T ramp<T>::value() {
+    return val;
 }
 
 template <class T>
 T ramp<T>::go(T _val) {
     val  = _val;
-    go(_val,0,NONE);
+    return go(_val,0,NONE);
 }
 
 template <class T>
-T ramp<T>::go(T _val, long _dur, byte _mode) {
-    return go(_val,_dur,(ramp_mode)_mode);
+T ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode) {
+	return go(_val,_dur,_mode, ONCEFORWARD);
 }
 
 template <class T>
-T ramp<T>::go(T _val, long _dur, ramp_mode _mode) {
-    A      = val;
-    B      = _val;
-    mode   = _mode;
-    dur    = _dur;
-    pos    = 0;
-    loop   = ONCEFORWARD;
-    speed  = FORWARD;
-    paused = false;
-    return val;
-}
-
-template <class T>
-T ramp<T>::go(T _val, long _dur, byte _mode, byte _loop) {
-    return go(_val,_dur,(ramp_mode)_mode, (loop_mode)_loop);
-}
-
-template <class T>
-T ramp<T>::go(T _val, long _dur, ramp_mode _mode, byte _loop) {
-    return go(_val,_dur, _mode, (loop_mode)_loop);
-}
-
-template <class T>
-T ramp<T>::go(T _val, long _dur, byte _mode, loop_mode _loop) {
-    return go(_val,_dur,(ramp_mode)_mode, _loop);
-}
-
-
-template <class T>
-T ramp<T>::go(T _val, long _dur, ramp_mode _mode, loop_mode _loop) {
+T ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
     A      = val;
     B      = _val;
     mode   = _mode;
@@ -81,11 +39,6 @@ T ramp<T>::go(T _val, long _dur, ramp_mode _mode, loop_mode _loop) {
     }
     loop   = _loop;
     paused = false;
-    return val;
-}
-
-template <class T>
-T ramp<T>::value() {
     return val;
 }
 
@@ -163,7 +116,7 @@ bool ramp<T>::isRunning() {
 
 template <class T>
 bool ramp<T>::isPaused() {
-    return ((bool)!paused);
+    return (!paused);
 }
 
 template <class T>
@@ -175,7 +128,6 @@ template <class T>
 void ramp<T>::resume() {
     paused = false;
 }
-
 
 
 /*-----------------------------

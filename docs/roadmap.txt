@@ -1,7 +1,8 @@
-ROADMAP - Ramp v0.3
+ROADMAP - Ramp v0.4
 
 - commencer la documentions
-- grain() pour configurer le grain (par défaut 10ms)
-- ajouter les keywords
+	> ajouter les keywords
 
-attention aux limitation (à priori ok)
+- grain() pour configurer le grain (par défaut 10ms)
+	> ok mais qu'est-ce que je fait de la duration, gérée en interne ou pas ?
+	> steps déterminée par duration et grain ?

@@ -1,34 +1,19 @@
-#include <Ramp.h>
+#include <Ramp.h>						// include library
 
-ramp<byte> test(0);                               // déclaration de l'objet
-
-rByte* RGB = new rByte[3];                        // plus d'espace de stockage moins de mémoire dynamique
-//rByte RGB[3];                                   // moins d'espace de stockage plus de mémoire dynamique
+ramp myRamp;							// new ramp object (ramp<byte> by default)
+long previousTime; 						// previous time
 
 void setup() {
-  Serial.begin(115200);                           // déclaration du port série
-
-  long t = millis();
-  long v, u = millis();
-  
-  test.go(255, 1000, BOUNCE_INOUT);               // démarrer l'interpolation
-
-  while (!test.isFinished()) {
-    delay(10);
-    Serial.println(test.update());
-  }
-
-  /*while (!test.isFinished()) {
-    v = millis();
-    if (v - u > 10) {
-      Serial.println(test.update());
-      u = v;
-    }
-  }
-
-  Serial.println("Done in "+String(millis()-t));*/
+  Serial.begin(9600);					// begin Serial communication
+  Serial.print("Value set to: ");		// print start value
+  Serial.println(myRamp.go(0));			// set a value
+  myRamp.go(255, 1000, BOUNCE_INOUT);	// set interpolation (value, time, interpolation mode)
 }
 
 void loop() {
+	long actualTime = millis();						// 
+	if (actualTime - previousTime > INTERVAL) {		// 
+		Serial.println(myRamp.update());			// print updated value
+		previousTime = actualTime;					// 
+	}
 }
-

@@ -77,19 +77,21 @@ float ramp_calc(float, ramp_mode);
  -----------------------------*/
 
 template <class T = unsigned char>
-class ramp {
+class _ramp {
 private:
-    unsigned long pos, dur;                 		// ramp position and duration
-	unsigned int  grain;							// grain 
+    unsigned long pos, dur, t;                 		// ramp position, duration and previous time
+	unsigned int  grain;							// grain
     T val, A, B;                            		// actual, origin and destination values
+    bool automated;                                 // automatic update or not
     bool paused;                            		// paused or not
     enum loop_mode loop;                    		// loop mode
     enum ramp_mode mode;                    		// ramp mode
     enum speed_mode speed;                  		// speed mode
+    void init(T);                                   // init ramp
     
 public:
-    ramp();                                 		// default constructor
-    ramp(T);                                		// constructor with initial value
+    _ramp();                                        // default constructor
+    _ramp(T);                                       // constructor with initial value
     T value();                              		// get value
     T update();                             		// update values
     T go(T);                                		// go directly to a new value
@@ -101,19 +103,25 @@ public:
     bool isPaused();                        		// is the ramp paused
     void pause();                           		// pause the ramp
     void resume();                          		// resume the ramp
+
+    void setAutomation(bool);                       // set the automation mode
+    void setGrain(unsigned long);                   // set the grain (interval beetween updates)
+    void setInterval(unsigned long);                // same as above
 };
 
 /*-----------------------------
  CLASS ALIAS
  -----------------------------*/
 
-typedef ramp<char> rampChar;
-typedef ramp<unsigned char> rampUnsignedchar;
-typedef ramp<int> rampInt;
-typedef ramp<unsigned int> rampUnsignedInt;
-typedef ramp<long> rampLong;
-typedef ramp<unsigned long> rampUnsignedLong;
-typedef ramp<float> rampFloat;
-typedef ramp<double> rampDouble;
+typedef _ramp<> ramp;
+typedef _ramp<> rampByte;
+typedef _ramp<> rampUnsignedChar;
+typedef _ramp<char> rampChar;
+typedef _ramp<int> rampInt;
+typedef _ramp<unsigned int> rampUnsignedInt;
+typedef _ramp<long> rampLong;
+typedef _ramp<unsigned long> rampUnsignedLong;
+typedef _ramp<float> rampFloat;
+typedef _ramp<double> rampDouble;
 
 #endif /* Ramp_h */

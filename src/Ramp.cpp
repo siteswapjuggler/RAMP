@@ -4,31 +4,64 @@
 #include "Ramp.h"
 
 /*-----------------------------
+ CLASS CONSTRUCTORS
+ -----------------------------*/
+
+template <class T>
+_ramp<T>::_ramp() {
+    init((T)0);
+}
+
+template <class T>
+_ramp<T>::_ramp(T _val) {
+    init(_val);
+}
+
+template <class T>
+void _ramp<T>::init(T _val) {
+    A         = _val;
+    B         = _val;
+    val       = _val;
+    mode      = NONE;
+    t         = millis();
+    dur       = 0;
+    pos       = 0;
+    grain     = 10;
+    loop      = ONCEFORWARD;
+    speed     = FORWARD;
+    paused    = false;
+    automated = true;
+}
+
+
+/*-----------------------------
  CLASS METHODS
  -----------------------------*/
 
 template <class T>
-T ramp<T>::value() {
+T _ramp<T>::value() {
     return val;
 }
 
 template <class T>
-T ramp<T>::go(T _val) {
+T _ramp<T>::go(T _val) {
     val  = _val;
     return go(_val,0,NONE);
 }
 
 template <class T>
-T ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode) {
-	return go(_val,_dur,_mode, ONCEFORWARD);
+T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode) {
+	return go(_val,_dur,_mode,ONCEFORWARD);
 }
 
 template <class T>
-T ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
+T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
     A      = val;
     B      = _val;
     mode   = _mode;
     dur    = _dur;
+    t      = millis();
+    
     if (_loop < ONCEBACKWARD) {
         pos   = 0;
         speed = FORWARD;
@@ -43,54 +76,69 @@ T ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
 }
 
 template <class T>
-T ramp<T>::update() {
-    if (!paused) {
-        switch (speed) {
-            case FORWARD:
-                if (pos < dur) pos++;
-                break;
-            case BACKWARD:
-                if (pos > 0) pos--;
-                break;
-        }
-        
-        if (mode) {
-            //float k = (float)pos/(float)dur;
-            long  p = (pos*100)/dur;
-            float k = p/100.;
-            //Serial.println(k);
-            val = A + (B-A)*ramp_calc(k,mode); // todo
-            constrain(val,A,B);
-        }
-        else {
-            val = B;
-        }
+T _ramp<T>::update() {
+    bool doUpdate = true;
+    unsigned long newTime;
+    
+    if (automated) {
+        newTime = millis();
+        doUpdate = (newTime-t) > grain;
     }
     
-    if (isFinished()) {
-        switch (loop) {
-            case LOOPFORWARD:
-                pos = 0;
-                break;
-            case LOOPBACKWARD:
-                pos = dur;
-                break;
-            case FORTHANDBACK:
-            case BACKANDFORTH:
-                switch (speed) {
-                    case FORWARD:
-                        speed = BACKWARD;
-                        break;
-                    case BACKWARD:
-                        speed = FORWARD;
-                        break;
-                }
-                break;
+    if (doUpdate) {
+
+        t = newTime;
+        if (!paused) {
+            switch (speed) {
+                case FORWARD:
+                    if (pos <= dur - grain) {
+                        pos += grain;
+                    }
+                    else pos = dur;
+                    break;
+                case BACKWARD:
+                    if (pos >= grain) {
+                        pos -= grain;
+                    }
+                    else pos = 0;
+                    break;
+            }
+        
+            if (mode) {
+                float k = (float)pos/(float)dur;
+                val = A + (B-A)*ramp_calc(k,mode);
+                constrain(val,A,B);                             //potential
+            }
+            else {
+                val = B;
+            }
+        }
+    
+        if (isFinished()) {
+            switch (loop) {
+                case LOOPFORWARD:
+                    pos = 0;
+                    break;
+                case LOOPBACKWARD:
+                    pos = dur;
+                    break;
+                case FORTHANDBACK:
+                case BACKANDFORTH:
+                    switch (speed) {
+                        case FORWARD:
+                            speed = BACKWARD;
+                            break;
+                        case BACKWARD:
+                            speed = FORWARD;
+                            break;
+                    }
+                    break;
                 
-            case ONCEBACKWARD:
-            case ONCEFORWARD:
-            default:
-                break;
+                case ONCEBACKWARD:
+                case ONCEFORWARD:
+                default:
+                    break;
+            }
         }
     }
     
@@ -102,7 +150,7 @@ T ramp<T>::update() {
  -----------------------------*/
 
 template <class T>
-bool ramp<T>::isFinished() {
+bool _ramp<T>::isFinished() {
     if (speed==FORWARD)
         return (pos==dur);
     if (speed==BACKWARD)
@@ -110,38 +158,56 @@ bool ramp<T>::isFinished() {
 }
 
 template <class T>
-bool ramp<T>::isRunning() {
+bool _ramp<T>::isRunning() {
     return (!isFinished() && !paused);
 }
 
 template <class T>
-bool ramp<T>::isPaused() {
+bool _ramp<T>::isPaused() {
     return (!paused);
 }
 
 template <class T>
-void ramp<T>::pause() {
+void _ramp<T>::pause() {
     paused = true;
 }
 
 template <class T>
-void ramp<T>::resume() {
+void _ramp<T>::resume() {
     paused = false;
 }
+
+
+template <class T>
+void _ramp<T>::setAutomation(bool _automated) {
+    automated = _automated;
+}
+
+template <class T>
+void _ramp<T>::setInterval(unsigned long _interval) {
+    setGrain(_interval);
+}
+
+template <class T>
+void _ramp<T>::setGrain(unsigned long _grain) {
+    grain = _grain;
+}
+
 
 
 /*-----------------------------
  EXPLICIT DECLARATION
  -----------------------------*/
 
-template class ramp<char>;
-template class ramp<unsigned char>;
-template class ramp<int>;
-template class ramp<unsigned int>;
-template class ramp<long>;
-template class ramp<unsigned long>;
-template class ramp<float>;
-template class ramp<double>;
+template class _ramp<char>;
+template class _ramp<byte>;
+template class _ramp<unsigned char>;
+template class _ramp<int>;
+template class _ramp<unsigned int>;
+template class _ramp<long>;
+template class _ramp<unsigned long>;
+template class _ramp<float>;
+template class _ramp<double>;
 
 
 /*-----------------------------

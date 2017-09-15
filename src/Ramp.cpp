@@ -50,6 +50,11 @@ T _ramp<T>::go(T _val) {
 }
 
 template <class T>
+T _ramp<T>::go(T _val, unsigned long _dur) {
+    return go(_val,_dur,LINEAR);
+}
+
+template <class T>
 T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode) {
 	return go(_val,_dur,_mode,ONCEFORWARD);
 }

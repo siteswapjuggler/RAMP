@@ -19,3 +19,8 @@ v0.3 ----------------------------------------------------------------------
 
 intégration de plus de modes d'interpolation
 paramètre de continuité de l'animation
+
+v0.4 ----------------------------------------------------------------------
+
+correction de bugs
+gestion du temps en interne

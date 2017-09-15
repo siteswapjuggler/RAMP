@@ -95,8 +95,9 @@ public:
     T value();                              		// get value
     T update();                             		// update values
     T go(T);                                		// go directly to a new value
-    T go(T, unsigned long, ramp_mode);              // ramp to _val, within _dur with _mode
-    T go(T, unsigned long, ramp_mode, loop_mode);   // ramp to _val, within _dur with _mode
+    T go(T, unsigned long);                         // ramp to _val, within _dur
+    T go(T, unsigned long, ramp_mode);              // ramp to _val, within _dur with ramp_mode
+    T go(T, unsigned long, ramp_mode, loop_mode);   // ramp to _val, within _dur with ramp_mode and loop_mode
     
     bool isFinished();                      		// is the ramp finished
     bool isRunning();                       		// is the ramp running

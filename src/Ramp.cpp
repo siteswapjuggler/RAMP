@@ -205,7 +205,6 @@ void _ramp<T>::setGrain(unsigned long _grain) {
  -----------------------------*/
 
 template class _ramp<char>;
-template class _ramp<byte>;
 template class _ramp<unsigned char>;
 template class _ramp<int>;
 template class _ramp<unsigned int>;

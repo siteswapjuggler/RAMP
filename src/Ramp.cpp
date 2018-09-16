@@ -33,7 +33,6 @@ void _ramp<T>::init(T _val) {
     automated = true;
 }
 
-
 /*-----------------------------
  CLASS METHODS
  -----------------------------*/
@@ -84,32 +83,34 @@ template <class T>
 T _ramp<T>::update() {
     bool doUpdate = true;
     unsigned long newTime;
+    unsigned long delta = grain;
     
     if (automated) {
         newTime = millis();
-        doUpdate = (newTime-t) > grain;
+        delta = newTime - t;
+        doUpdate = delta > grain;
     }
     
-    if (doUpdate) {
+    if (mode != NONE && doUpdate) {
 
         t = newTime;
         if (!paused) {
             switch (speed) {
                 case FORWARD:
-                    if (pos <= dur - grain) {
-                        pos += grain;
+                    if (pos <= dur - delta) {
+                        pos += delta;
                     }
                     else pos = dur;
                     break;
                 case BACKWARD:
-                    if (pos >= grain) {
-                        pos -= grain;
+                    if (pos >= delta) {
+                        pos -= delta;
                     }
                     else pos = 0;
                     break;
             }
         
-            if (mode) {
+            if (mode != NONE) {
                 float k = (float)pos/(float)dur;
                 val = A + (B-A)*ramp_calc(k,mode);
                 constrain(val,A,B);                             //potential
@@ -233,7 +234,7 @@ float powinout(float k, uint8_t p) {
     return 1-0.5*fabs(pow(2-k,p));
 }
 
-float ramp_calc(float k, enum ramp_mode m) {
+float ramp_calc(float k, ramp_mode m) {
 
     if (k == 0 || k == 1)
         return k;

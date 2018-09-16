@@ -1,3 +1,0 @@
-TODO LIST
-
-- bugs des constrains à corriger selon les types

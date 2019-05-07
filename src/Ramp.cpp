@@ -38,8 +38,23 @@ void _ramp<T>::init(T _val) {
  -----------------------------*/
 
 template <class T>
+unsigned long _ramp<T>::duration() {
+    return dur;
+}
+
+template <class T>
 T _ramp<T>::value() {
     return val;
+}
+
+template <class T>
+T _ramp<T>::origin() {
+    return A;
+}
+
+template <class T>
+T _ramp<T>::target() {
+    return B;
 }
 
 template <class T>

@@ -21,9 +21,12 @@ rampDouble	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-go	KEYWORD2
-update	KEYWORD2
+duration	KEYWORD2
 value	KEYWORD2
+origin	KEYWORD2
+target	KEYWORD2
+update	KEYWORD2
+go	KEYWORD2
 isFinished	KEYWORD2
 isRunning	KEYWORD2
 isPaused	KEYWORD2

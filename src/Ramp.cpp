@@ -158,9 +158,9 @@ T _ramp<T>::update() {
 template <class T>
 bool _ramp<T>::isFinished() {
     if (speed==FORWARD)
-        return (pos==dur);
+        return (pos>=dur);
     if (speed==BACKWARD)
-        return (pos==0);
+        return (pos<=0);
 }
 
 template <class T>

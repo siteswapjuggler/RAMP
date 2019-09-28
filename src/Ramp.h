@@ -92,7 +92,10 @@ private:
 public:
     _ramp();                                        // default constructor
     _ramp(T);                                       // constructor with initial value
-    T value();                              		// get value
+    unsigned long duration();                       // get duration of the interpolation
+    T value();                              		// get current interpolated value
+    T origin();                                     // get origin value of the interpolation
+    T target();                                     // get target value of the interpolation
     T update();                             		// update values
     T go(T);                                		// go directly to a new value
     T go(T, unsigned long);                         // ramp to _val, within _dur

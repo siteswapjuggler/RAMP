@@ -5,7 +5,7 @@ void setup() {
   Serial.begin(9600);                       // begin Serial communication
   
   Serial.print("Value start at: ");         //
-  Serial.println(myRamp.value());			      // accessing start value
+  Serial.println(myRamp.value());           // accessing start value
 
   Serial.println("Starting interpolation"); // 
   myRamp.go(255, 1000);                     // start interpolation (value to go to, duration)

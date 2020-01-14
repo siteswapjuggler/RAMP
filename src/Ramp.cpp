@@ -97,7 +97,7 @@ T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
 template <class T>
 T _ramp<T>::update() {
     bool doUpdate = true;
-    unsigned long newTime;
+    unsigned long newTime = 0;
     unsigned long delta = grain;
     
     if (automated) {
@@ -176,6 +176,7 @@ bool _ramp<T>::isFinished() {
         return (pos>=dur);
     if (speed==BACKWARD)
         return (pos<=0);
+    return false;
 }
 
 template <class T>

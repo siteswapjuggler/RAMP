@@ -22,6 +22,7 @@ The library add a class template to manage interpolation beetween values of vari
 * **value()** get actual value of the interpolation
 * **origin()** get last origin value of the interpolation
 * **target()** get last target value of the interpolation
+* **completion()** get the completion percentage of the interpolation
 * **duration()** get last duration of the interpolation
 * **update()** update value of the interpolation according to its parameters
 * **pause()** pause the interpolation

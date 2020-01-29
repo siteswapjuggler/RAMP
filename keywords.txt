@@ -21,6 +21,7 @@ rampDouble	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
+completion	KEYWORD2
 duration	KEYWORD2
 value	KEYWORD2
 origin	KEYWORD2

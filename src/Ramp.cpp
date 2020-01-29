@@ -37,6 +37,11 @@ void _ramp<T>::init(T _val) {
  CLASS METHODS
  -----------------------------*/
 
+float _ramp<T>::completion() {
+	double val = (double)pos/(double)duration;
+	return val;
+}
+
 template <class T>
 unsigned long _ramp<T>::duration() {
     return dur;

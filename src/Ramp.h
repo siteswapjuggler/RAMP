@@ -93,6 +93,7 @@ public:
     _ramp();                                        // default constructor
     _ramp(T);                                       // constructor with initial value
     unsigned long duration();                       // get duration of the interpolation
+	float completion();								// get current ramp completion percentage [0.-100.]
     T value();                              		// get current interpolated value
     T origin();                                     // get origin value of the interpolation
     T target();                                     // get target value of the interpolation

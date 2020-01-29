@@ -38,8 +38,9 @@ void _ramp<T>::init(T _val) {
  -----------------------------*/
 
 float _ramp<T>::completion() {
-	double val = (double)pos/(double)duration;
-	return val;
+	float val = pos*10000/duration;
+	float /= 100.;
+	return (float) val;
 }
 
 template <class T>
@@ -64,7 +65,6 @@ T _ramp<T>::target() {
 
 template <class T>
 T _ramp<T>::go(T _val) {
-    val  = _val;
     return go(_val,0,NONE);
 }
 
@@ -85,6 +85,8 @@ T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
     mode   = _mode;
     dur    = _dur;
     t      = millis();
+
+	if (_dur == 0) val  = _val;
     
     if (_loop < ONCEBACKWARD) {
         pos   = 0;

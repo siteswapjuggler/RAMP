@@ -37,10 +37,11 @@ void _ramp<T>::init(T _val) {
  CLASS METHODS
  -----------------------------*/
 
+template <class T>
 float _ramp<T>::completion() {
-	float val = pos*10000/duration;
-	float /= 100.;
-	return (float) val;
+	float val = (pos*10000)/dur;
+	val /= 100;
+	return val;
 }
 
 template <class T>

@@ -34,73 +34,8 @@ void _ramp<T>::init(T _val) {
 }
 
 /*-----------------------------
- CLASS METHODS
+ RAMP UPDATE
  -----------------------------*/
-
-template <class T>
-float _ramp<T>::completion() {
-	float val = pos*10000/dur;
-	val /= 100.;
-	return (float) val;
-}
-
-template <class T>
-unsigned long _ramp<T>::duration() {
-    return dur;
-}
-
-template <class T>
-T _ramp<T>::value() {
-    return val;
-}
-
-template <class T>
-T _ramp<T>::origin() {
-    return A;
-}
-
-template <class T>
-T _ramp<T>::target() {
-    return B;
-}
-
-template <class T>
-T _ramp<T>::go(T _val) {
-    return go(_val,0,NONE);
-}
-
-template <class T>
-T _ramp<T>::go(T _val, unsigned long _dur) {
-    return go(_val,_dur,LINEAR);
-}
-
-template <class T>
-T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode) {
-	return go(_val,_dur,_mode,ONCEFORWARD);
-}
-
-template <class T>
-T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
-    A      = val;
-    B      = _val;
-    mode   = _mode;
-    dur    = _dur;
-    t      = millis();
-
-	if (_dur == 0) val  = _val;
-    
-    if (_loop < ONCEBACKWARD) {
-        pos   = 0;
-        speed = FORWARD;
-    }
-    else {
-        pos   = dur;
-        speed = BACKWARD;
-    }
-    loop   = _loop;
-    paused = false;
-    return val;
-}
 
 template <class T>
 T _ramp<T>::update() {
@@ -111,32 +46,34 @@ T _ramp<T>::update() {
     if (automated) {
         newTime = millis();
         delta = newTime - t;
-        doUpdate = delta > grain;
+        doUpdate = delta >= grain;
     }
     
     if (mode != NONE && doUpdate) {
 
         t = newTime;
         if (!paused) {
+            
+            // update ramp position within limits
             switch (speed) {
                 case FORWARD:
-                    if (pos <= dur - delta) {
+                    if ((long long)pos + delta < dur) {
                         pos += delta;
                     }
                     else pos = dur;
                     break;
                 case BACKWARD:
-                    if (pos >= delta) {
+                    if ((long long)pos - delta > 0) {
                         pos -= delta;
                     }
                     else pos = 0;
                     break;
             }
         
+            // update value according to the new position
             if (mode != NONE) {
                 float k = (float)pos/(float)dur;
                 val = A + (B-A)*ramp_calc(k,mode);
-                constrain(val,A,B);                             //potential
             }
             else {
                 val = B;
@@ -175,15 +112,67 @@ T _ramp<T>::update() {
 }
 
 /*-----------------------------
- RAMP STATES & ACTIONS
+ RAMP ACTIONS
+ -----------------------------*/
+
+template <class T>
+T _ramp<T>::go(T _val) {
+    return go(_val,0,NONE);
+}
+
+template <class T>
+T _ramp<T>::go(T _val, unsigned long _dur) {
+    return go(_val,_dur,LINEAR);
+}
+
+template <class T>
+T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode) {
+    return go(_val,_dur,_mode,ONCEFORWARD);
+}
+
+template <class T>
+T _ramp<T>::go(T _val, unsigned long _dur, ramp_mode _mode, loop_mode _loop) {
+    A      = val;
+    B      = _val;
+    mode   = _mode;
+    dur    = _dur;
+    t      = millis();
+    
+    if (_dur == 0) val  = B;
+    
+    if (_loop < ONCEBACKWARD) {
+        pos   = 0;
+        speed = FORWARD;
+    }
+    else {
+        pos   = dur;
+        speed = BACKWARD;
+    }
+    loop   = _loop;
+    paused = false;
+    return val;
+}
+
+template <class T>
+void _ramp<T>::pause() {
+    paused = true;
+}
+
+template <class T>
+void _ramp<T>::resume() {
+    paused = false;
+}
+
+/*-----------------------------
+ RAMP STATES
  -----------------------------*/
 
 template <class T>
 bool _ramp<T>::isFinished() {
     if (speed==FORWARD)
-        return (pos>=dur);
+        return (pos==dur);
     if (speed==BACKWARD)
-        return (pos<=0);
+        return (pos==0);
     return false;
 }
 
@@ -197,32 +186,55 @@ bool _ramp<T>::isPaused() {
     return (!paused);
 }
 
-template <class T>
-void _ramp<T>::pause() {
-    paused = true;
-}
-
-template <class T>
-void _ramp<T>::resume() {
-    paused = false;
-}
-
-
-template <class T>
-void _ramp<T>::setAutomation(bool _automated) {
-    automated = _automated;
-}
-
-template <class T>
-void _ramp<T>::setInterval(unsigned long _interval) {
-    setGrain(_interval);
-}
+/*-----------------------------
+ RAMP SETTERS
+ -----------------------------*/
 
 template <class T>
 void _ramp<T>::setGrain(unsigned long _grain) {
     grain = _grain;
 }
 
+template <class T>
+void _ramp<T>::setAutomation(bool _automated) {
+    automated = _automated;
+}
+
+/*-----------------------------
+ RAMP GETTERS
+ -----------------------------*/
+
+template <class T>
+float _ramp<T>::getCompletion() {
+    float val = pos*10000/dur;
+    val /= 100.;
+    return (float) val;
+}
+
+template <class T>
+unsigned long _ramp<T>::getDuration() {
+    return dur;
+}
+
+template <class T>
+unsigned long _ramp<T>::getPosition() {
+    return pos;
+}
+
+template <class T>
+T _ramp<T>::getValue() {
+    return val;
+}
+
+template <class T>
+T _ramp<T>::getOrigin() {
+    return A;
+}
+
+template <class T>
+T _ramp<T>::getTarget() {
+    return B;
+}
 
 
 /*-----------------------------
@@ -345,14 +357,14 @@ float ramp_calc(float k, ramp_mode m) {
             s = p*asin(1/a) / (2*M_PI);
             return -a*pow(2,10*k)*sin((k-s)*(2*M_PI)/p);
             
-        case ELASTIC_OUT:       //BUG???
+        case ELASTIC_OUT:
             a = 1;
             p = 0.3;
             s = p*asin(1/a) / (2*M_PI);
             return (a*pow(2,-10*k)*sin((k-s)*(2*M_PI)/p)+1);
             
             
-        case ELASTIC_INOUT:     //BUG???
+        case ELASTIC_INOUT:
             k = k*2 - 1;
             a = 1;
             p = 0.3*1.5;

@@ -19,16 +19,19 @@ The library add a class template to manage interpolation beetween values of vari
 ## Methods
 
 * **go()** go to a new value
-* **value()** get actual value of the interpolation
-* **origin()** get last origin value of the interpolation
-* **target()** get last target value of the interpolation
-* **completion()** get the completion percentage of the interpolation
-* **duration()** get last duration of the interpolation
-* **update()** update value of the interpolation according to its parameters
 * **pause()** pause the interpolation
 * **resume()** resume from pause
+* **update()** update value of the interpolation according to its parameters
+
+* **getValue()** get actual value of the interpolation
+* **getOrigin()** get last origin value of the interpolation
+* **getTarget()** get last target value of the interpolation
+* **getCompletion()** get the completion percentage of the interpolation
+* **getDuration()** get last duration of the interpolation
+
 * **setGrain()** set interpolation grain
 * **setAutomation()** set automation mode
+
 * **isPaused()** pause state
 * **isRunning()** running state
 * **isFinished()** finish state

@@ -92,16 +92,19 @@ private:
 public:
     _ramp();                                        // default constructor
     _ramp(T);                                       // constructor with initial value
-    unsigned long duration();                       // get duration of the interpolation
-	float completion();								// get current ramp completion percentage [0.-100.]
-    T value();                              		// get current interpolated value
-    T origin();                                     // get origin value of the interpolation
-    T target();                                     // get target value of the interpolation
     T update();                             		// update values
-    T go(T);                                		// go directly to a new value
+
+    T go(T);                                        // go directly to a new value
     T go(T, unsigned long);                         // ramp to _val, within _dur
     T go(T, unsigned long, ramp_mode);              // ramp to _val, within _dur with ramp_mode
     T go(T, unsigned long, ramp_mode, loop_mode);   // ramp to _val, within _dur with ramp_mode and loop_mode
+
+    T getValue();                                   // get current interpolated value
+    T getOrigin();                                  // get origin value of the interpolation
+    T getTarget();                                  // get target value of the interpolation
+    float getCompletion();                          // get current ramp completion percentage [0.-100.]
+    unsigned long getDuration();                    // get duration of the interpolation
+    unsigned long getPosition();                    // get current position of the interpolation
     
     bool isFinished();                      		// is the ramp finished
     bool isRunning();                       		// is the ramp running
@@ -111,7 +114,6 @@ public:
 
     void setAutomation(bool);                       // set the automation mode
     void setGrain(unsigned long);                   // set the grain (interval beetween updates)
-    void setInterval(unsigned long);                // same as above
 };
 
 /*-----------------------------

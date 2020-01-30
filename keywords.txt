@@ -21,11 +21,11 @@ rampDouble	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-completion	KEYWORD2
-duration	KEYWORD2
-value	KEYWORD2
-origin	KEYWORD2
-target	KEYWORD2
+getCompletion	KEYWORD2
+getDuration	KEYWORD2
+getValue	KEYWORD2
+getOrigin	KEYWORD2
+getTarget	KEYWORD2
 update	KEYWORD2
 go	KEYWORD2
 isFinished	KEYWORD2
@@ -35,7 +35,6 @@ pause	KEYWORD2
 resume	KEYWORD2
 setAutomation	KEYWORD2
 setGrain	KEYWORD2
-setInterval	KEYWORD2
 
 
 #######################################

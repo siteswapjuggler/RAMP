@@ -134,6 +134,7 @@ T _ramp<T>::update() {
             }
         
             if (mode != NONE) {
+		if(pos > dur) pos = dur;
                 float k = (float)pos/(float)dur;
                 val = A + (B-A)*ramp_calc(k,mode);
                 constrain(val,A,B);                             //potential

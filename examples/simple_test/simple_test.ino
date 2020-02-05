@@ -14,5 +14,5 @@ void setup() {
 void loop() {
   Serial.print("Actual value is: ");        // 
   Serial.println(myRamp.update());          // update() return the actual interpolation value
-  delay(100);
+  delay(100);                               //
 }

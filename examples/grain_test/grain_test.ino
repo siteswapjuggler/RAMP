@@ -1,19 +1,18 @@
-#include <Ramp.h>
+#include <Ramp.h>                             // include library
 
-int lastValue;
-rampInt myRamp;
+int lastValue;                                // global variable
+rampInt myRamp;                               // new int ramp object
 
 void setup() {
-  Serial.begin(2000000);
-  myRamp.setGrain(1);
-  myRamp.go(5000,0,LINEAR);
-  myRamp.go(0, 15);
-  Serial.println();
+  Serial.begin(115200);                       // begin Serial communication
+  myRamp.setGrain(1);                         // set grain to 1 ms
+  myRamp.go(5000);                            // set value to directly to 5000
+  myRamp.go(0, 15, LINEAR, LOOPFORWARD);      // go to 0 in 15 ms
 }
 
 void loop() {
-  int val = myRamp.update();
-  if (val != lastValue) {
+  int val = myRamp.update();                  // store updated value
+  if (val != lastValue) {                     // print updated value and completion percentage
     Serial.print(val);
     Serial.print("\t|\t");
     Serial.print(myRamp.getCompletion());

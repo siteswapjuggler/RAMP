@@ -71,9 +71,9 @@ T _ramp<T>::update() {
             }
         
             // update value according to the new position
-            if (mode != NONE) {
+            if (mode != NONE and dur > 0 and A != B) {
                 float k = (float)pos/(float)dur;
-                val = A + (B-A)*ramp_calc(k,mode);
+				val = B >= A ? (A + (B-A)*ramp_calc(k,mode)) : (A - (A-B)*ramp_calc(k,mode));
             }
             else {
                 val = B;

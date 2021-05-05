@@ -122,7 +122,7 @@ T _ramp<T>::go(T _val) {
 
 template <class T>
 T _ramp<T>::go(T _val, unsigned long _dur) {
-    return go(_val,_dur,LINEAR);
+    return go(_val,_dur,LINEARE);
 }
 
 template <class T>
@@ -415,7 +415,7 @@ float ramp_calc(float k, ramp_mode m) {
             return ramp_calc(k*2-1,BOUNCE_OUT)*0.5+0.5;
             break;
             
-        case LINEAR:
+        case LINEARE:
         default:
             return k;
     }

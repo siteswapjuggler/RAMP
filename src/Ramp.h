@@ -16,7 +16,7 @@
 
 enum ramp_mode {
     NONE                = 0x00,
-    LINEAR              = 0x01,
+    LINEARE              = 0x01,
     QUADRATIC_IN        = 0x02,
     QUADRATIC_OUT       = 0x03,
     QUADRATIC_INOUT     = 0x04,

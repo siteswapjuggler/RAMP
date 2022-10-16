@@ -1,3 +1,5 @@
+#include <Arduino.h>                    // needed for PlatformIO
+
 #define SERVO_PIN      9                // Servo motor PWM control pin
 #define JOYSTICK_PIN  A0                // Joystick analog input
 #define SPEED         60                // degree/s

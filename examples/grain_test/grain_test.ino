@@ -1,3 +1,4 @@
+#include <Arduino.h>                          // needed for PlatformIO
 #include <Ramp.h>                             // include library
 
 int lastValue;                                // global variable

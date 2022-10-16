@@ -1,3 +1,4 @@
+#include <Arduino.h>                        // needed for PlatformIO
 #include <Ramp.h>                           // include library
 ramp myRamp;                                // new ramp object (ramp<unsigned char> by default)
 

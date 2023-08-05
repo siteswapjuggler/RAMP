@@ -14,7 +14,7 @@ The library add a class template to manage interpolation beetween values of vari
 * **rampLong** ramp object for "long" interpolation
 * **rampUnsignedLong** ramp object for "unsigned long" interpolation
 * **rampFloat** ramp object for "float" interpolation
-* **rampDouble** ramp object for "doubl" interpolation
+* **rampDouble** ramp object for "double" interpolation
 
 ## Methods
 
@@ -27,7 +27,7 @@ The library add a class template to manage interpolation beetween values of vari
 * **getOrigin()** get last origin value of the interpolation
 * **getTarget()** get last target value of the interpolation
 * **getCompletion()** get the completion percentage of the interpolation
-* **getDuration()** get last duration of the interpolation
+* **getDuration()** get last duration of the interpolation / milliseconds
 
 * **setGrain()** set interpolation grain
 * **setAutomation()** set automation mode
@@ -44,11 +44,13 @@ First you need to instanciate the object as a global variable :
 
 Then you need to a new value to reach : 
 
-	myRamp.go(new_value, (ramp_duration), (ramp_mode), (loop_mode));
+	myRamp.go(new_value, (ramp_duration_in_ms), (ramp_mode), (loop_mode));
 
 At least you'll need to update to get the actual interpolation value :
 
 	myInterpolationValue = myRamp.update();
+	
+Unless mentionned all time/duration values are in ms.
 
 ## Interpolation mode
 

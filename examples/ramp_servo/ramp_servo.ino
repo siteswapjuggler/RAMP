@@ -20,7 +20,7 @@ void updateServo() {
 
 void updateJoystick(bool init = false) {
   int  val = map(analogRead(JOYSTICK_PIN), 0, 1023, 0, 180);              // read and map joystick value
-  uint32_t duration = 1000.* (float)abs(myAngle.getValue()-val)/SPEED;    // calculate ramp duration according to speed
+  uint32_t duration = 1000.* (float)abs(myAngle.getValue()-val)/SPEED;    // calculate ramp duration in ms according to speed
   
   if (init) {                                                             // start with going to the initial position
     myAngle.go(val);
@@ -30,7 +30,7 @@ void updateJoystick(bool init = false) {
   } 
   
   if (abs(val-previousAngle) >=2) {
-    myAngle.go(val, duration);                                            // set next ramp interpolation
+    myAngle.go(val, duration);                                            // set next ramp interpolation in ms
     previousAngle = val;                                                  // save previous val
   }
 }

@@ -6,10 +6,10 @@ void setup() {
   Serial.begin(9600);                       // begin Serial communication
   
   Serial.print("Value start at: ");         //
-  Serial.println(myRamp.getValue());        // accessing start value
+  Serial.println(myRamp.getValue());        // ramp object instantiate with a value of O
 
-  Serial.println("Starting interpolation"); // 
-  myRamp.go(255, 1000);                     // start interpolation (value to go to, duration)
+  Serial.println("Starting interpolation"); //  
+  myRamp.go(255, 30000);                    // start interpolation (value to go to, duration in ms)
 }
 
 void loop() {

@@ -52,6 +52,34 @@ T _ramp<T>::update() {
     if (mode != NONE && doUpdate) {
 
         t = newTime;
+
+        if (isFinished()) {
+            switch (loop) {
+                case LOOPFORWARD:
+                    pos = 0;
+                    break;
+                case LOOPBACKWARD:
+                    pos = dur;
+                    break;
+                case FORTHANDBACK:
+                case BACKANDFORTH:
+                    switch (speed) {
+                        case FORWARD:
+                            speed = BACKWARD;
+                            break;
+                        case BACKWARD:
+                            speed = FORWARD;
+                            break;
+                    }
+                    break;
+                
+                case ONCEBACKWARD:
+                case ONCEFORWARD:
+                default:
+                    break;
+            }
+        }        
+
         if (!paused) {
             
             // update ramp position within limits
@@ -77,33 +105,6 @@ T _ramp<T>::update() {
             }
             else {
                 val = B;
-            }
-        }
-    
-        if (isFinished()) {
-            switch (loop) {
-                case LOOPFORWARD:
-                    pos = 0;
-                    break;
-                case LOOPBACKWARD:
-                    pos = dur;
-                    break;
-                case FORTHANDBACK:
-                case BACKANDFORTH:
-                    switch (speed) {
-                        case FORWARD:
-                            speed = BACKWARD;
-                            break;
-                        case BACKWARD:
-                            speed = FORWARD;
-                            break;
-                    }
-                    break;
-                
-                case ONCEBACKWARD:
-                case ONCEFORWARD:
-                default:
-                    break;
             }
         }
     }

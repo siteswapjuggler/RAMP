@@ -184,7 +184,7 @@ bool _ramp<T>::isRunning() {
 
 template <class T>
 bool _ramp<T>::isPaused() {
-    return (!paused);
+    return (paused);
 }
 
 /*-----------------------------

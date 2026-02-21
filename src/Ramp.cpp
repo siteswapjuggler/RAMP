@@ -207,6 +207,7 @@ void _ramp<T>::setAutomation(bool _automated) {
 
 template <class T>
 float _ramp<T>::getCompletion() {
+    if (dur == 0) return (float) 100.;
     float val = pos*10000/dur;
     val /= 100.;
     return (float) val;

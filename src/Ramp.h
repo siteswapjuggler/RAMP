@@ -64,6 +64,22 @@ enum loop_mode {
 };
 
 /*-----------------------------
+ COLOR STRUCTURE
+ -----------------------------*/
+
+union rgbColor {
+  uint32_t value;
+  struct {
+    uint8_t b;
+    uint8_t g;
+    uint8_t r;
+    uint8_t _;
+  };
+  rgbColor(uint32_t v=0) : value(v & 0x00FFFFFF) {}
+  operator uint32_t() const { return value; }
+};
+
+/*-----------------------------
  GENERIC FUNCTIONS
  -----------------------------*/
 
@@ -71,6 +87,10 @@ float powin(float, unsigned char);
 float powout(float, unsigned char);
 float powinout(float, unsigned char);
 float ramp_calc(float, ramp_mode);
+
+template<typename T>
+T ramp_interp(T, T, float);
+rgbColor ramp_interp(rgbColor, rgbColor, float);
 
 /*-----------------------------
  CLASS TEMPLATE
@@ -130,5 +150,6 @@ typedef _ramp<long> rampLong;
 typedef _ramp<unsigned long> rampUnsignedLong;
 typedef _ramp<float> rampFloat;
 typedef _ramp<double> rampDouble;
+typedef _ramp<rgbColor> rampColor;
 
 #endif /* Ramp_h */

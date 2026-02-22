@@ -100,8 +100,8 @@ T _ramp<T>::update() {
         
             // update value according to the new position
             if (mode != NONE and dur > 0 and A != B) {
-                float k = (float)pos/(float)dur;
-				val = B >= A ? (A + (B-A)*ramp_calc(k,mode)) : (A - (A-B)*ramp_calc(k,mode));
+                float u = ramp_calc((float)pos/(float)dur,mode);
+                val = ramp_interp(A, B, u);
             }
             else {
                 val = B;
@@ -110,6 +110,48 @@ T _ramp<T>::update() {
     }
     
     return val;
+}
+
+/*-----------------------------
+ TYPE ABSTRACTION
+ -----------------------------*/
+
+template<typename T>
+T ramp_interp(T A, T B, float u) {
+  if (B >= A) return (A + (B - A) * u);
+  else return (A - (A - B) * u);
+}
+
+template<>
+uint8_t ramp_interp<uint8_t>(uint8_t A, uint8_t B, float u) {
+  float y = (B >= A) ? (A + (B - A)*u) : (A - (A - B)*u);
+  if (y < 0) y = 0;
+  if (y > UINT8_MAX) y = UINT8_MAX;
+  return (uint8_t)y;
+}
+
+template<>
+uint16_t ramp_interp<uint16_t>(uint16_t A, uint16_t B, float u) {
+  float y = (B >= A) ? (A + (B - A)*u) : (A - (A - B)*u);
+  if (y < 0) y = 0;
+  if (y > UINT16_MAX) y = UINT16_MAX;
+  return (uint16_t)y;
+}
+
+template<>
+uint32_t ramp_interp<uint32_t>(uint32_t A, uint32_t B, float u) {
+  float y = (B >= A) ? (A + (B - A)*u) : (A - (A - B)*u);
+  if (y < 0) y = 0;
+  if (y > UINT32_MAX) y = UINT32_MAX;
+  return (uint32_t)y;
+}
+
+rgbColor ramp_interp(rgbColor A, rgbColor B, float u) {
+  rgbColor output = 0;
+  output.r = ramp_interp(A.r, B.r, u);
+  output.g = ramp_interp(A.g, B.g, u);
+  output.b = ramp_interp(A.b, B.b, u);
+  return output;
 }
 
 /*-----------------------------
@@ -251,7 +293,13 @@ template class _ramp<long>;
 template class _ramp<unsigned long>;
 template class _ramp<float>;
 template class _ramp<double>;
+template class _ramp<rgbColor>;
 
+template char   ramp_interp(char, char, float);
+template int    ramp_interp(int, int, float);
+template long   ramp_interp(long, long, float);
+template float  ramp_interp(float, float, float);
+template double ramp_interp(double, double, float);
 
 /*-----------------------------
  GENERIC FUNCTIONS
